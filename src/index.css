@@ -96,3 +96,22 @@ body {
 .slide-panel.open {
   max-height: 200px;
 }
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-nord-frost-2) var(--color-nord-dark-2);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  background: var(--color-nord-dark-2);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-nord-frost-2);
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-nord-frost-3);
+}
