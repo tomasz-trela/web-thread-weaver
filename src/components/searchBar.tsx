@@ -5,10 +5,36 @@ type SearchBarProps = {
   defaultValue?: string
 }
 
+function CustomRadio({name, label, value, checkedValue, onClick}: {name: string, label: string, value: string, checkedValue?: string, onClick?: (value: string) => void}) {
+  const id = name + '-' + value;
+  return (
+    <label htmlFor={id}>
+      <input
+        id={id}
+        type="radio"
+        name={name}
+        value={value}
+        className="sr-only peer"
+        checked={checkedValue !== undefined ? (checkedValue === value) : undefined}
+        onClick={onClick ? () => onClick(value) : undefined}
+      />
+      <span className="px-6 py-3 text-lg font-medium text-white bg-nord-dark-2 rounded-lg peer-checked:bg-nord-dark-3 peer-checked:ring-2 peer-checked:ring-nord-aurora-0 hover:bg-nord-dark-3 hover:cursor-pointer transition-all">
+        {label}
+      </span>
+    </label> 
+  )
+}
+
 export default function SearchBar({ onSearch, defaultValue }: SearchBarProps) {    
   const [search, setSearch] = useState(defaultValue || '')
   const [showFilters, setShowFilters] = useState(false)
   const [prevDefaultValue, setPrevDefaultValue] = useState(defaultValue)
+  const [filters, setFilters] = useState({
+    searchType: 'hybrid-search',
+    startDate: '',
+    endDate: '',
+    tag: ''
+  })
 
   if (defaultValue !== prevDefaultValue) {
     setSearch(defaultValue || '')
@@ -51,8 +77,12 @@ export default function SearchBar({ onSearch, defaultValue }: SearchBarProps) {
         </div>
       </div>
 
-      <div className={showFilters ? 'slide-panel open' : 'slide-panel'}>
-        Here add filters for threads, like tags, date, etc.
+      <div className={'p-4'+ (showFilters ? ' slide-panel open' : ' slide-panel')}>
+        <div className="flex gap-4 my-4">
+          <CustomRadio name="search-type" label="Hybrid search" value="hybrid-search" checkedValue={filters.searchType} onClick={(value) => setFilters({...filters, searchType: value})} />
+          <CustomRadio name="search-type" label="Full-text search" value="full-text-search" checkedValue={filters.searchType} onClick={(value) => setFilters({...filters, searchType: value})} />
+          <CustomRadio name="search-type" label="Semantic search" value="semantic-search" checkedValue={filters.searchType} onClick={(value) => setFilters({...filters, searchType: value})} />
+        </div>
 
         <input className='block' type='date' />
         <input className='block' type='date' />
