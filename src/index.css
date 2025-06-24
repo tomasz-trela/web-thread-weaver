@@ -37,7 +37,7 @@ body {
   height: 1px;
   width: 100%;
   background-color: #ccc; /* line color */
-  margin: 40px 0;
+  margin: 20px 0;
 }
 
 .circle-arrow {
@@ -94,7 +94,7 @@ body {
 }
 
 .slide-panel.open {
-  max-height: 200px;
+  max-height: 500px;
 }
 
 .custom-scrollbar {

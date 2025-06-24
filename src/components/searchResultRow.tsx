@@ -12,6 +12,7 @@ export type SearchResultRowData = {
 	endTime: number;
 	speaker?: string;
 	youtubeId?: string;
+	date?: string;
 }
 
 type SearchResultRowProps = {
@@ -23,7 +24,7 @@ type SearchResultRowProps = {
 export function SearchResultRow({searchResult, isActive, onClick}: SearchResultRowProps) {
 	const [showFullDescription, setShowFullDescription] = useState(false);
 
-	const { title, description, utteranceText, utteranceId, startTime, endTime, speaker, youtubeId } = searchResult;
+	const { title, description, utteranceText, utteranceId, startTime, endTime, speaker, youtubeId, date } = searchResult;
 	
 	const onClickWrapper = () => {onClick && onClick(utteranceId)};
 
@@ -68,7 +69,8 @@ export function SearchResultRow({searchResult, isActive, onClick}: SearchResultR
 				</div>
 				
 				<div className='flex justify-between mt-3'>
-					<p className="text-xs text-nord-dark-4">Start Time: {secondsToTimeString(startTime)}, End Time: {secondsToTimeString(endTime)}</p>
+					<p className="text-xs">{date}</p>
+					<p className="text-xs">Time: {secondsToTimeString(startTime)} - {secondsToTimeString(endTime)}</p>
 					{youtubeId && <a href={videoUrl} target="_blank" rel="noopener noreferrer" className="text-[#FF0033] hover:underline">
 						<FontAwesomeIcon icon={faYoutube} />
 					</a>}

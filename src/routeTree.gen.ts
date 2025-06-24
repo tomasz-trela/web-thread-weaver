@@ -9,12 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ThreadsRouteImport } from './routes/threads'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as AddRouteImport } from './routes/add'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ThreadsThreadIdRouteImport } from './routes/threads_.$threadId'
+import { Route as ThreadsThreadIdUnknownRouteImport } from './routes/threads_.$threadId_.unknown'
 
+const ThreadsRoute = ThreadsRouteImport.update({
+  id: '/threads',
+  path: '/threads',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AddRoute = AddRouteImport.update({
+  id: '/add',
+  path: '/add',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -22,40 +36,99 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ThreadsThreadIdRoute = ThreadsThreadIdRouteImport.update({
+  id: '/threads_/$threadId',
+  path: '/threads/$threadId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThreadsThreadIdUnknownRoute = ThreadsThreadIdUnknownRouteImport.update({
+  id: '/threads_/$threadId_/unknown',
+  path: '/threads/$threadId/unknown',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/add': typeof AddRoute
   '/search': typeof SearchRoute
+  '/threads': typeof ThreadsRoute
+  '/threads/$threadId': typeof ThreadsThreadIdRoute
+  '/threads/$threadId/unknown': typeof ThreadsThreadIdUnknownRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/add': typeof AddRoute
   '/search': typeof SearchRoute
+  '/threads': typeof ThreadsRoute
+  '/threads/$threadId': typeof ThreadsThreadIdRoute
+  '/threads/$threadId/unknown': typeof ThreadsThreadIdUnknownRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/add': typeof AddRoute
   '/search': typeof SearchRoute
+  '/threads': typeof ThreadsRoute
+  '/threads_/$threadId': typeof ThreadsThreadIdRoute
+  '/threads_/$threadId_/unknown': typeof ThreadsThreadIdUnknownRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/search'
+  fullPaths:
+    | '/'
+    | '/add'
+    | '/search'
+    | '/threads'
+    | '/threads/$threadId'
+    | '/threads/$threadId/unknown'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/search'
-  id: '__root__' | '/' | '/search'
+  to:
+    | '/'
+    | '/add'
+    | '/search'
+    | '/threads'
+    | '/threads/$threadId'
+    | '/threads/$threadId/unknown'
+  id:
+    | '__root__'
+    | '/'
+    | '/add'
+    | '/search'
+    | '/threads'
+    | '/threads_/$threadId'
+    | '/threads_/$threadId_/unknown'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AddRoute: typeof AddRoute
   SearchRoute: typeof SearchRoute
+  ThreadsRoute: typeof ThreadsRoute
+  ThreadsThreadIdRoute: typeof ThreadsThreadIdRoute
+  ThreadsThreadIdUnknownRoute: typeof ThreadsThreadIdUnknownRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/threads': {
+      id: '/threads'
+      path: '/threads'
+      fullPath: '/threads'
+      preLoaderRoute: typeof ThreadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/add': {
+      id: '/add'
+      path: '/add'
+      fullPath: '/add'
+      preLoaderRoute: typeof AddRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -65,12 +138,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/threads_/$threadId': {
+      id: '/threads_/$threadId'
+      path: '/threads/$threadId'
+      fullPath: '/threads/$threadId'
+      preLoaderRoute: typeof ThreadsThreadIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/threads_/$threadId_/unknown': {
+      id: '/threads_/$threadId_/unknown'
+      path: '/threads/$threadId/unknown'
+      fullPath: '/threads/$threadId/unknown'
+      preLoaderRoute: typeof ThreadsThreadIdUnknownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AddRoute: AddRoute,
   SearchRoute: SearchRoute,
+  ThreadsRoute: ThreadsRoute,
+  ThreadsThreadIdRoute: ThreadsThreadIdRoute,
+  ThreadsThreadIdUnknownRoute: ThreadsThreadIdUnknownRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
